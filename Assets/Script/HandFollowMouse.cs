@@ -10,6 +10,7 @@ public class HandFollowMouse : MonoBehaviour
     public float radius = 1.0f;           // ?? ??? ???? ?????.
     public Vector3 centerOffset;          // ?? ?? ???? ?????.
     public SpriteRenderer handSprite;     // ?? ????? ???? ?????.
+    public SpriteRenderer playerSprite;
 
     void Update()
     {
@@ -38,11 +39,13 @@ public class HandFollowMouse : MonoBehaviour
         // ?? ?? ?? ???? ?????? X?? ?????.
         if (handPosition.x < characterTransform.position.x)
         {
-            handSprite.flipX = true;
+            handSprite.flipY = true;
+            playerSprite.flipX = true;
         }
         else
         {
-            handSprite.flipX = false;
+            handSprite.flipY = false;
+            playerSprite.flipX = false;
         }
     }
 }

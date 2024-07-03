@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f76ff50036288c843a8f66446923105b
+guid: bcb82507dc77c0946a3077826359a1a2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -81,33 +81,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -145,11 +119,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Robot_stand-Sheet_0
+      name: Enemy_Robot_stand-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -163,14 +150,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1a272b0f40ae124f8cfda937938e0af
-      internalID: -1030102972
+      spriteID: 4ab67392799ca1f43a5cedcb985a6351
+      internalID: 1610968957
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Robot_stand-Sheet_1
+      name: Enemy_Robot_stand-Sheet_1
       rect:
         serializedVersion: 2
         x: 64
@@ -184,14 +171,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b6f310e2ff7ebb240a306f05f2b6259d
-      internalID: -1173340513
+      spriteID: 31eed24c0dc12a1428515d45b54d1bf4
+      internalID: 1133068286
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Robot_stand-Sheet_2
+      name: Enemy_Robot_stand-Sheet_2
       rect:
         serializedVersion: 2
         x: 128
@@ -205,14 +192,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eaf2de72b1cc47d479f31d03936f21f3
-      internalID: -1230882977
+      spriteID: c3a863152e388bb4badbf268a7659783
+      internalID: 439522147
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Robot_stand-Sheet_3
+      name: Enemy_Robot_stand-Sheet_3
       rect:
         serializedVersion: 2
         x: 192
@@ -226,8 +213,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02933fc66edf76440826b4c44cdd2220
-      internalID: -1220827278
+      spriteID: aae0cf197f85a0e4d93b969bbc63e005
+      internalID: -1519380969
       vertices: []
       indices: 
       edges: []
@@ -243,10 +230,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Robot_stand-Sheet_0: -1030102972
-      Robot_stand-Sheet_1: -1173340513
-      Robot_stand-Sheet_2: -1230882977
-      Robot_stand-Sheet_3: -1220827278
+      Enemy_Robot_stand-Sheet_0: 1610968957
+      Enemy_Robot_stand-Sheet_1: 1133068286
+      Enemy_Robot_stand-Sheet_2: 439522147
+      Enemy_Robot_stand-Sheet_3: -1519380969
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
