@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerAction : MonoBehaviour
 {
     public float moveSpeed;
+    public DialogueManager manager; 
     float speedX, speedY;
     bool isstart;
     Rigidbody2D rb;
@@ -29,11 +30,18 @@ public class PlayerMovement : MonoBehaviour
         speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
         rb.velocity = new Vector2(speedX, speedY);
 
-        if (!isstart)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Start"))
         {
-            anim.SetBool("IsStart?", true);
-
-
+            moveSpeed = 0.0f;
         }
+        else
+        {
+            moveSpeed = 3.0f;
+        }
+    }
+    private void FixedUpdate()
+    {
+        //Ray
+
     }
 }
