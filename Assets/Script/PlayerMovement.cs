@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed;
     float speedX, speedY;
+    bool isstart;
     Rigidbody2D rb;
     Animator anim;
 
@@ -23,8 +24,16 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         anim.SetFloat("Speed", rb.velocity.magnitude);
+        isstart = anim.GetBool("IsStart?");
         speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
         speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
         rb.velocity = new Vector2(speedX, speedY);
+
+        if (!isstart)
+        {
+            anim.SetBool("IsStart?", true);
+
+
+        }
     }
 }
