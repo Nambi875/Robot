@@ -39,9 +39,4 @@ public class PlayerAction : MonoBehaviour
             moveSpeed = 3.0f;
         }
     }
-    private void FixedUpdate()
-    {
-        //Ray
-
-    }
 }

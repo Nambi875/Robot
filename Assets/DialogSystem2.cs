@@ -6,9 +6,9 @@ using TMPro;
 public class DialogSystem2 : MonoBehaviour
 {
     public GameObject uiElement;
-    public TextMeshProUGUI uiText; // TextMeshProUGUI∑Œ ∫Ø∞Ê
-    public List<string> messages; // ø¿∫Í¡ß∆Æ∏∂¥Ÿ ¥Ÿ∏£∞‘ º≥¡§«“ ¥Î»≠ ∏Ò∑œ
-    private int currentMessageIndex = 0; // «ˆ¿Á ¥Î»≠ ¿Œµ¶Ω∫
+    public TextMeshProUGUI uiText; // TextMeshProUGUI∑Œ ∫Ø∞ÅE
+    public List<string> messages; // ø¿∫ÅEß∆Æ∏∂¥Ÿ ¥Ÿ∏£∞‘ º≥¡§«“ ¥ÅE≠ ∏Ò∑œ
+    private int currentMessageIndex = 0; // «ˆ¿ÅE¥ÅE≠ ¿Œµ¶Ω∫
     Animator anim;
 
     private bool isPlayerInZone = false;
@@ -40,7 +40,7 @@ public class DialogSystem2 : MonoBehaviour
                 anim.SetBool("IsSpeaking?", true);
                 uiElement.SetActive(true);
                 currentMessageIndex = 0;
-                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // √π π¯¬∞ ¥Î»≠ √‚∑¬ Ω√¿€
+                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // √π π¯¬∞ ¥ÅE≠ √‚∑¬ Ω√¿€
             }
             else if (isTyping)
             {
@@ -51,13 +51,13 @@ public class DialogSystem2 : MonoBehaviour
             else if (!isTyping && currentMessageIndex < messages.Count - 1)
             {
                 currentMessageIndex++;
-                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // ¥Ÿ¿Ω ¥Î»≠ √‚∑¬
+                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // ¥Ÿ¿Ω ¥ÅE≠ √‚∑¬
             }
             else
             {
                 uiElement.SetActive(false);
                 anim.SetBool("IsSpeaking?", false);
-                StopAllCoroutines(); // ƒ⁄∑Á∆æ ¡ﬂ¡ˆ
+                StopAllCoroutines(); // ƒ⁄∑Á∆æ ¡ﬂ¡ÅE
             }
             Debug.Log("UI Element Toggled: " + uiElement.activeSelf);
         }
@@ -78,7 +78,7 @@ public class DialogSystem2 : MonoBehaviour
         {
             isPlayerInZone = false;
             uiElement.SetActive(false);
-            StopAllCoroutines(); // ƒ⁄∑Á∆æ ¡ﬂ¡ˆ
+            StopAllCoroutines(); // ƒ⁄∑Á∆æ ¡ﬂ¡ÅE
             Debug.Log("Player Exited Trigger Zone");
         }
     }
