@@ -7,12 +7,17 @@ public class Weapon1 : MonoBehaviour
 
     public GameObject weapon1;
     private bool isPlayerInZone = false;
+    public PlayerWeaponSystem playerWeaponSystem;
 
+    private void Start()
+    {
+        playerWeaponSystem = FindObjectOfType<PlayerWeaponSystem>();
+    }
     private void Update()
     {
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
-            GameObject.Find("Getweapons").GetComponent<PlayerWeaponSystem>().Getweapons = true;
+            playerWeaponSystem.Getweapons = true;
             weapon1.SetActive(false);
             Debug.Log("Get Weapon Toggled: ");
         }
@@ -37,4 +42,3 @@ public class Weapon1 : MonoBehaviour
         }
     }
 }
-

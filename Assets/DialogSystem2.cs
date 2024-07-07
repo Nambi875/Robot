@@ -7,8 +7,8 @@ public class DialogSystem2 : MonoBehaviour
 {
     public GameObject uiElement;
     public TextMeshProUGUI uiText; // TextMeshProUGUIｷﾎ ｺｯｰ・
-    public List<string> messages; // ｿﾀｺ・ｧﾆｮｸｶｴﾙ ｴﾙｸ｣ｰﾔ ｼｳﾁ､ﾇﾒ ｴ・ｭ ｸﾏ
-    private int currentMessageIndex = 0; // ﾇ・ｴ・ｭ ﾀﾎｵｦｽｺ
+    public List<string> messages; // ｿﾀｺ・ｧﾆ?ｶｴ?ｴﾙｸ｣ｰﾔ ｼｳﾁ､ﾇﾒ ｴ・?ｸﾏ
+    private int currentMessageIndex = 0; // ﾇ・ｴ・?ﾀﾎｵｦｽｺ
     Animator anim;
 
     private bool isPlayerInZone = false;
@@ -40,7 +40,7 @@ public class DialogSystem2 : MonoBehaviour
                 anim.SetBool("IsSpeaking?", true);
                 uiElement.SetActive(true);
                 currentMessageIndex = 0;
-                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // ﾃｹ ｹｰ ｴ・ｭ ﾃ箙ﾂ ｽﾃﾀﾛ
+                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // ﾃｹ ｹｰ ｴ・?ﾃ箙ﾂ ｽﾃﾀﾛ
             }
             else if (isTyping)
             {
@@ -51,7 +51,7 @@ public class DialogSystem2 : MonoBehaviour
             else if (!isTyping && currentMessageIndex < messages.Count - 1)
             {
                 currentMessageIndex++;
-                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // ｴﾙﾀｽ ｴ・ｭ ﾃ箙ﾂ
+                typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // ｴﾙﾀｽ ｴ・?ﾃ箙ﾂ
             }
             else
             {
