@@ -5,21 +5,22 @@ using UnityEngine;
 public class BulletControler : MonoBehaviour
 {
     public GameObject bulletPrefab;  // ?? ???
-    public Transform firePoint;      // ?? ?? ??
-    public float bulletSpeed = 20f;  // ?? ??
-    public float fireRate = 0.5f;    // ?? ?? (? ??)
-    public float reloadTime = 2.0f; // ???? ??? ?? (? ??)
+    public Transform firePoint;      // ??? ??? ??
+    public float bulletSpeed = 20f;  // ?? ???
+    public float fireRate = 0.5f;    // ?? ????(? ??)
+    public float reloadTime = 2.0f;  // ??? ??
     public int maxAmmo = 10;         // ?? ?? ?
-    private float nextFireTime = 0f; // ?? ?? ??
-    private bool canFire = true;     // ?? ?? ??
     private int currentAmmo;         // ?? ?? ?
+    private float nextFireTime = 0f; // ?? ?? ??
+    private bool canFire = true;     // ?? ???? ??
+    private bool isShooting = false; // ?? ??? ??
     private Animator anim;
 
-    private Queue<float> fireQueue = new Queue<float>(); // ?? ?
+    private Queue<float> fireQueue = new Queue<float>(); // 
 
     void Start()
     {
-        // ?? ?? ? ??
+        // ???? ???
         currentAmmo = maxAmmo;
     }
 
@@ -30,17 +31,17 @@ public class BulletControler : MonoBehaviour
 
     void Update()
     {
-        // ??? ?? ? ?? ?? ?? ??
+        // ???? ??? ????
         if (Input.GetMouseButton(0))
         {
             if (Time.time >= nextFireTime)
             {
-                if (canFire)
+                if (canFire && !isShooting)
                 {
                     GetComponent<Animator>().SetBool("NeedReload", false);
                     nextFireTime = Time.time + fireRate;
                     GetComponent<Animator>().SetTrigger("Shoot");
-                    Shoot();
+                    StartCoroutine(Shoot());
                 }
             }
         }
@@ -52,16 +53,15 @@ public class BulletControler : MonoBehaviour
             GetComponent<Animator>().SetBool("NeedReload", false);
         }
     }
-    // ????? ???? ?? ???? ??
-    void Shoot()
+    // ????
+    IEnumerator Shoot()
     {
+        isShooting = true;
+
         if (canFire)
         {
-            // ?? ??
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            // ??? Rigidbody2D? ???
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            // ??? ?? ?? ??
             rb.velocity = firePoint.right * bulletSpeed;
 
             currentAmmo--;
@@ -72,8 +72,11 @@ public class BulletControler : MonoBehaviour
                 GetComponent<Animator>().SetBool("NeedReload", true);
             }
         }
+        yield return new WaitForSeconds(fireRate);
+        isShooting = false;
     }
 
+    // ???
     IEnumerator Reload()
     {
         yield return new WaitForSeconds(reloadTime);
