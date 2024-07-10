@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class BulletControler : MonoBehaviour
 {
-    public GameObject bulletPrefab;  // ?? ???
-    public Transform firePoint;      // ??? ??? ??
-    public float bulletSpeed = 20f;  // ?? ???
-    public float fireRate = 0.5f;    // ?? ????(? ??)
-    public float reloadTime = 2.0f;  // ??? ??
-    public int maxAmmo = 10;         // ?? ?? ?
-    private int currentAmmo;         // ?? ?? ?
-    private float nextFireTime = 0f; // ?? ?? ??
-    private bool canFire = true;     // ?? ???? ??
-    private bool isShooting = false; // ?? ??? ??
+    public GameObject bulletPrefab;  // 총알 프리팹
+    public Transform firePoint;      // 발사 지점
+    public float bulletSpeed = 20f;  // 총알 속도
+    public float fireRate = 0.5f;    // 발사 간격
+    public float reloadTime = 2.0f;  // 재장전 시간
+    public int maxAmmo = 10;         // 최대 탄약 수
+    private int currentAmmo;         // 현재 탄약 수
+    private float nextFireTime = 0f; // 다음 발사 가능 시간
+    private bool canFire = true;     // 발사 가능 여부
+    private bool isShooting = false; // 발사 중 여부
     private Animator anim;
 
-    private Queue<float> fireQueue = new Queue<float>(); // 
+    private Queue<float> fireQueue = new Queue<float>(); // 발사 큐
 
     void Start()
     {
-        // ???? ???
+        // 탄약 초기화
         currentAmmo = maxAmmo;
     }
 
@@ -31,7 +31,7 @@ public class BulletControler : MonoBehaviour
 
     void Update()
     {
-        // ???? ??? ????
+        // 마우스 왼쪽 버튼이 눌렸을 때 발사
         if (Input.GetMouseButton(0))
         {
             if (Time.time >= nextFireTime)
@@ -46,14 +46,19 @@ public class BulletControler : MonoBehaviour
             }
         }
 
+        // R 키가 눌렸을 때 재장전
         if (Input.GetKeyDown(KeyCode.R))
         {
-            StartCoroutine(Reload());
-            GetComponent<Animator>().SetTrigger("Reload");
-            GetComponent<Animator>().SetBool("NeedReload", false);
+            if (!isShooting)  // 발사 중이 아닐 때만 재장전 시작
+            {
+                StartCoroutine(Reload());
+                GetComponent<Animator>().SetTrigger("Reload");
+                GetComponent<Animator>().SetBool("NeedReload", false);
+            }
         }
     }
-    // ????
+
+    // 발사
     IEnumerator Shoot()
     {
         isShooting = true;
@@ -76,7 +81,7 @@ public class BulletControler : MonoBehaviour
         isShooting = false;
     }
 
-    // ???
+    // 재장전
     IEnumerator Reload()
     {
         yield return new WaitForSeconds(reloadTime);
