@@ -1,24 +1,27 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class EnemyController : MonoBehaviour
+public class TB01_Boss_Script : MonoBehaviour
 {
-    public float health = 100f;  // �ִ�Eü��
-    public float detectionRadius = 5.0f; // �÷��̾�E����E��E�
-    public float obstacleAvoidanceRadius = 1.0f; // ��ֹ� ȸ�� �ݰ�E
-    public float speed; // ���� �̵� �ӵ�
-    public float knockbackForce = 10f; // �˹�EȁE
+    public float health = 100f; //* 현재 체력
+    public float maxHealth; //* 최대 체력
+    public float detectionRadius = 5.0f; // ﾇﾃｷｹﾀﾌｾ・ｰｨﾁ・ｹ・ｧ
+    public float obstacleAvoidanceRadius = 1.0f; // ﾀ蠕ﾖｹｰ ﾈｸﾇﾇ ｹﾝｰ・
+    public float speed; // ﾀ釥ﾇ ﾀﾌｵｿ ｼﾓｵｵ
+    public float knockbackForce = 10f; // ｳﾋｹ・ﾈ・
+    public Slider HpBarSlider;
 
-    private bool isChasing = false; // �÷��̾�Ԧ �Ѵ� ����
-    private Transform player; // �÷��̾��� Transform
+    private bool isChasing = false; // ﾇﾃｷｹﾀﾌｾ鋕ｦ ﾂﾑｴﾂ ｻﾂ
+    private Transform player; // ﾇﾃｷｹﾀﾌｾ鋿ﾇ Transform
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator anim;
     private Vector2 knockbackDirection;
     private bool isKnockback = false;
 
-    void Awake() // �ʱ�ȭ
+    void Awake() // ﾃﾊｱ篳ｭ
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -28,15 +31,19 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        HpBarSlider.value = health / maxHealth;
+
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
         if (distanceToPlayer < detectionRadius)
         {
             isChasing = true;
+            HpBarSlider.gameObject.SetActive(true);
         }
         else
         {
             isChasing = false;
+            HpBarSlider.gameObject.SetActive(false);
         }
 
         if (isChasing && !isKnockback)
@@ -55,10 +62,10 @@ public class EnemyController : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, obstacleAvoidanceRadius, direction, detectionRadius);
 
-        // ����׿�E�α� �߰�
-        Debug.DrawLine(transform.position, player.position, Color.green); // �÷��̾�E��ǁE
-        Debug.DrawRay(transform.position, direction * detectionRadius, Color.red); // Ž��E��ǁE
-        Debug.DrawRay(transform.position, direction * obstacleAvoidanceRadius, Color.blue); // ȸ�� �ݰ�E
+        // ｵﾗｿ・ｷﾎｱﾗ ﾃﾟｰ｡
+        Debug.DrawLine(transform.position, player.position, Color.green); // ﾇﾃｷｹﾀﾌｾ・ｹ貮・
+        Debug.DrawRay(transform.position, direction * detectionRadius, Color.red); // ﾅｽﾁ・ｹ貮・
+        Debug.DrawRay(transform.position, direction * obstacleAvoidanceRadius, Color.blue); // ﾈｸﾇﾇ ｹﾝｰ・
 
         anim.SetBool("IsChasing", true);
 
@@ -91,7 +98,7 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;  // ü�� ����
+        health -= damage;  // ﾃｼｷﾂ ｰｨｼﾒ
         knockbackDirection = (transform.position - player.position).normalized;
 
         if (health <= 0)
@@ -108,7 +115,8 @@ public class EnemyController : MonoBehaviour
     {
         speed = 0;
         anim.SetBool("IsDead", true);
-        Destroy(gameObject,2);  // �׾��� ��
+        HpBarSlider.gameObject.SetActive(false); // 체력 바 비활성화
+        Destroy(gameObject, 2);  // 2초 후 오브젝트 삭제
     }
 
     public IEnumerator Knockback(float duration, float power)
@@ -126,5 +134,3 @@ public class EnemyController : MonoBehaviour
         isKnockback = false;
     }
 }
-
-

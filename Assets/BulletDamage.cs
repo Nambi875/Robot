@@ -23,13 +23,20 @@ public class BulletDamage : MonoBehaviour
 
         // 충돌한 오브젝트가 적인지 확인
         EnemyController enemy = hitInfo.GetComponent<EnemyController>();
+        TB01_Boss_Script TB01 = hitInfo.GetComponent<TB01_Boss_Script>();
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
             Destroy(gameObject);
         }
+        if (TB01 != null)
+        {
+            TB01.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
 
         // 충돌 시 총알 제거
-     
+
     }
 }
