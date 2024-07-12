@@ -108,9 +108,15 @@ public class PlayerAction : MonoBehaviour
             TakeDamage(1);
             Debug.Log("Player getting 10");
         }
+
+        if (collision.gameObject.CompareTag("EnemyBullet"))
+        {
+            knockbackDirection = (transform.position - collision.transform.position).normalized;
+            Debug.Log("Player getting 10");
+        }
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if (!invincible)
         {

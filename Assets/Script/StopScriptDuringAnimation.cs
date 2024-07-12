@@ -10,28 +10,28 @@ public class StopScriptDuringAnimation : MonoBehaviour
 
     private void Awake()
     {
-        // "Player" ¿ÀºêÁ§Æ®¿¡¼­ Animator ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
+        // "Player" ¿ÀºE§Æ®¿¡¼­ Animator ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
         GameObject playerObject = GameObject.Find("Player");
         if (playerObject != null)
         {
             externalAnimator = playerObject.GetComponent<Animator>();
 
-            // externalAnimator°¡ Á¸ÀçÇÏ´ÂÁö ´Ù½Ã È®ÀÎÇÕ´Ï´Ù.
+            // externalAnimator°¡ Á¸ÀçÇÏ´ÂÁE´Ù½Ã È®ÀÎÇÕ´Ï´Ù.
             if (externalAnimator == null)
             {
-                Debug.LogError("Player ¿ÀºêÁ§Æ®¿¡ Animator ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù!");
+                Debug.LogError("Player ¿ÀºE§Æ®¿¡ Animator ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù!");
             }
         }
         else
         {
-            Debug.LogError("\"Player\" ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("\"Player\" ¿ÀºE§Æ®¸¦ Ã£À» ¼E¾ø½À´Ï´Ù!");
         }
 
-        // ÇöÀç ¿ÀºêÁ§Æ®¿¡¼­ SpriteRenderer¿Í HandFollowMouse ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
+        // ÇöÀE¿ÀºE§Æ®¿¡¼­ SpriteRenderer¿Í HandFollowMouse ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿É´Ï´Ù.
         spriteRenderer = GetComponent<SpriteRenderer>();
         handFollowMouse = GetComponent<HandFollowMouse>();
 
-        // ÄÄÆ÷³ÍÆ®°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+        // ÄÄÆ÷³ÍÆ®°¡ Á¸ÀçÇÏ´ÂÁEÈ®ÀÎÇÕ´Ï´Ù.
         if (spriteRenderer == null)
         {
             Debug.LogError("SpriteRenderer ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù!");
@@ -45,7 +45,7 @@ public class StopScriptDuringAnimation : MonoBehaviour
     // Update´Â ¸Å ÇÁ·¹ÀÓ¸¶´Ù È£ÃâµË´Ï´Ù.
     void Update()
     {
-        // AnimatorÀÇ ÇöÀç »óÅÂ¸¦ È®ÀÎÇÕ´Ï´Ù.
+        // AnimatorÀÇ ÇöÀE»óÅÂ¸¦ È®ÀÎÇÕ´Ï´Ù.
         if (externalAnimator != null && spriteRenderer != null && handFollowMouse != null)
         {
             if (externalAnimator.GetCurrentAnimatorStateInfo(0).IsName("Start"))

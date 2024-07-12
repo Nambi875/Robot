@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,12 @@ using UnityEngine;
 public class BulletDamage : MonoBehaviour
 {
     public float damage = 10f;  // 총알의 데미지
+    public Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
@@ -18,6 +25,7 @@ public class BulletDamage : MonoBehaviour
 
         if (hitInfo.gameObject.CompareTag("Wall"))
         {
+            anim.SetTrigger("IsAttach");
             Destroy(gameObject);
         }
 
@@ -34,9 +42,5 @@ public class BulletDamage : MonoBehaviour
             TB01.TakeDamage(damage);
             Destroy(gameObject);
         }
-
-
-        // 충돌 시 총알 제거
-
     }
 }

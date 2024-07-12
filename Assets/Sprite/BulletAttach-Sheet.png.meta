@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fb8c505951412eb4898663772a5ce1ba
+guid: 3e3aac4f6c128fd43bb0fe4bffcb0d47
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shadow_0
+      name: BulletAttach-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,8 +137,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93e6f58b177c56a458810671de323dfe
-      internalID: 1105569760
+      spriteID: bc1003cdbd001f0439d4e284b6674d30
+      internalID: -1826323648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletAttach-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 203dbfc206ce1a84491c7e2af40646e1
+      internalID: -1253510367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletAttach-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ec4a667e93a08044a62c2cadf33a589
+      internalID: 1229473750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletAttach-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9ca7fcb6ca6d4546bf681f071174861
+      internalID: 343326953
       vertices: []
       indices: 
       edges: []
@@ -154,7 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Shadow_0: 1105569760
+      BulletAttach-Sheet_0: -1826323648
+      BulletAttach-Sheet_1: -1253510367
+      BulletAttach-Sheet_2: 1229473750
+      BulletAttach-Sheet_3: 343326953
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

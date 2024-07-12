@@ -1,24 +1,24 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float health = 100f;  // ÃÖ´EÃ¼·Â
-    public float detectionRadius = 5.0f; // ÇÃ·¹ÀÌ¾E°¨ÁE¹E§
-    public float obstacleAvoidanceRadius = 1.0f; // Àå¾Ö¹° È¸ÇÇ ¹İ°E
-    public float speed; // ÀûÀÇ ÀÌµ¿ ¼Óµµ
-    public float knockbackForce = 10f; // ³Ë¹EÈE
+    public float health = 100f;  // ï¾ƒï¾–ï½´ãƒ»ï¾ƒï½¼ï½·ï¾‚
+    public float detectionRadius = 5.0f; // ï¾‡ï¾ƒï½·ï½¹ï¾€ï¾Œï½¾ãƒ»ï½°ï½¨ï¾ãƒ»ï½¹ãƒ»ï½§
+    public float obstacleAvoidanceRadius = 1.0f; // ï¾€è •ï¾–ï½¹ï½° ï¾ˆï½¸ï¾‡ï¾‡ ï½¹ï¾ï½°ãƒ»
+    public float speed; // ï¾€é‡¥ï¾‡ ï¾€ï¾Œï½µï½¿ ï½¼ï¾“ï½µï½µ
+    public float knockbackForce = 10f; // ï½³ï¾‹ï½¹ãƒ»ï¾ˆãƒ»
+    public Transform player; // í”Œë ˆì´ì–´ì˜ Transformì„ ì°¸ì¡°
 
-    private bool isChasing = false; // ÇÃ·¹ÀÌ¾ûÔ¦ ÂÑ´Â »óÅÂ
-    private Transform player; // ÇÃ·¹ÀÌ¾ûÜÇ Transform
+    private bool isChasing = false; // ï¾‡ï¾ƒï½·ï½¹ï¾€ï¾Œï½¾é‹•ï½¦ ï¾‚ï¾‘ï½´ï¾‚ ï½»îŠ¸ï¾‚
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator anim;
     private Vector2 knockbackDirection;
     private bool isKnockback = false;
 
-    void Awake() // ÃÊ±âÈ­
+    void Awake() // ï¾ƒï¾Šï½±ç¯³ï½­
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -55,10 +55,10 @@ public class EnemyController : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, obstacleAvoidanceRadius, direction, detectionRadius);
 
-        // µğ¹ö±×¿E·Î±× Ãß°¡
-        Debug.DrawLine(transform.position, player.position, Color.green); // ÇÃ·¹ÀÌ¾E¹æÇE
-        Debug.DrawRay(transform.position, direction * detectionRadius, Color.red); // Å½ÁE¹æÇE
-        Debug.DrawRay(transform.position, direction * obstacleAvoidanceRadius, Color.blue); // È¸ÇÇ ¹İ°E
+        // ï½µî¸î“˜ï¾—ï½¿ãƒ»ï½·ï¾ï½±ï¾— ï¾ƒï¾Ÿï½°ï½¡
+        Debug.DrawLine(transform.position, player.position, Color.green); // ï¾‡ï¾ƒï½·ï½¹ï¾€ï¾Œï½¾ãƒ»ï½¹è²®ãƒ»
+        Debug.DrawRay(transform.position, direction * detectionRadius, Color.red); // ï¾…ï½½ï¾ãƒ»ï½¹è²®ãƒ»
+        Debug.DrawRay(transform.position, direction * obstacleAvoidanceRadius, Color.blue); // ï¾ˆï½¸ï¾‡ï¾‡ ï½¹ï¾ï½°ãƒ»
 
         anim.SetBool("IsChasing", true);
 
@@ -91,11 +91,13 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;  // Ã¼·Â °¨¼Ò
+        health -= damage;  // ï¾ƒï½¼ï½·ï¾‚ ï½°ï½¨ï½¼ï¾’
         knockbackDirection = (transform.position - player.position).normalized;
 
         if (health <= 0)
         {
+            knockbackForce = 2;
+            StartCoroutine(Knockback(0.2f, knockbackForce));
             Die();
         }
         else
@@ -108,7 +110,7 @@ public class EnemyController : MonoBehaviour
     {
         speed = 0;
         anim.SetBool("IsDead", true);
-        Destroy(gameObject,2);  // Á×¾úÀ» ¶§
+        Destroy(gameObject,2);  // ï¾ï¾—ï½¾æƒ•ï½» ï½¶ï½§
     }
 
     public IEnumerator Knockback(float duration, float power)
