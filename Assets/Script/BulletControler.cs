@@ -31,7 +31,7 @@ public class BulletControler : MonoBehaviour
 
     void Update()
     {
-        // ｸｶｿ・ｺ ｿﾞﾂﾊ ｹｰﾀﾌ ｴｭｷﾈﾀｻ ｶｧ ｹﾟｻ・
+        // ｸｶｿ・?ｿﾞﾂﾊ ｹｰﾀﾌ ｴｭｷﾈﾀｻ ｶｧ ｹﾟｻ・
         if (Input.GetMouseButton(0))
         {
             if (Time.time >= nextFireTime)

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class PlayerAction : MonoBehaviour
 {
-    //이동 관련
+    // 移動関連
     public float moveSpeed;
     public DialogueManager manager;
     float speedX, speedY;
 
-    //체력 관련
+    // 体力関連
     public int health;
     public int num0fHearts;
     public Image[] hearts;
@@ -19,22 +20,24 @@ public class PlayerAction : MonoBehaviour
     public Sprite halfHeart;
     public Sprite emptyHeart;
 
-    //무적시스템관련
+    // 無敵システム関連
     public float invincibleTime = 2.0f;
     private bool invincible = false;
     private float invincibleTimer = 2.0f;
 
-    //넉백시스템관련
+    // ノックバックシステム関連
     public float knockbackForce = 10f;
     private Vector2 knockbackDirection;
     private bool isKnockback = false;
 
-    //애니메이션 관련
+    // アニメーション関連
     bool isstart;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private Rigidbody2D rb;
     private Animator anim;
+
+    private bool isInputEnabled = true;
 
     private void Awake()
     {
@@ -46,10 +49,17 @@ public class PlayerAction : MonoBehaviour
 
     void Update()
     {
+
+        if (!isInputEnabled)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         anim.SetFloat("Speed", rb.velocity.magnitude);
         isstart = anim.GetBool("IsStart?");
 
-        // 현재 체력이 최대 체력을 넘지 않도록 제한
+        // 現在の体力が最大体力を超えないように制限
         if (health > num0fHearts)
         {
             health = num0fHearts;
@@ -70,24 +80,16 @@ public class PlayerAction : MonoBehaviour
                 hearts[i].sprite = emptyHeart;
             }
 
-            // 하트가 최대 체력을 넘지 않도록 활성화/비활성화 설정
+            // ハートが最大体力を超えないように有効/無効設定
             hearts[i].enabled = i < num0fHearts;
         }
 
-        if (!isKnockback) // ｳﾋｹ・ﾁﾟﾀﾌ ｾﾆｴﾒ ｶｧｸｸ ﾀﾌｵｿ ｰ｡ｴﾉ
+        if (!isKnockback) // ノックバック中でないときのみ移動
         {
-            speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
-            speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
-            rb.velocity = new Vector2(speedX, speedY);
-        }
-
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Start"))
-        {
-            moveSpeed = 0.0f;
-        }
-        else
-        {
-            moveSpeed = 3.0f;
+            speedX = Input.GetAxisRaw("Horizontal");
+            speedY = Input.GetAxisRaw("Vertical");
+            Vector2 moveDirection = new Vector2(speedX, speedY).normalized; // 正規化
+            rb.velocity = moveDirection * moveSpeed;
         }
 
         if (invincible)
@@ -100,18 +102,23 @@ public class PlayerAction : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("EnemyBullet"))
+        {
+            knockbackDirection = (transform.position - collision.transform.position).normalized;
+            TakeDamage(1);
+            Debug.Log("Player hit by enemy bullet");
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             knockbackDirection = (transform.position - collision.transform.position).normalized;
             TakeDamage(1);
-            Debug.Log("Player getting 10");
-        }
-
-        if (collision.gameObject.CompareTag("EnemyBullet"))
-        {
-            knockbackDirection = (transform.position - collision.transform.position).normalized;
             Debug.Log("Player getting 10");
         }
     }
@@ -145,13 +152,23 @@ public class PlayerAction : MonoBehaviour
             timer += Time.deltaTime;
             rb.AddForce(knockbackDirection * power, ForceMode2D.Impulse);
             yield return null;
-         }
+        }
 
         isKnockback = false;
     }
 
-        void Die()
-        {
-            Destroy(gameObject);
-        }
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    public void EnableInput()
+    {
+        isInputEnabled = true;
+    }
+
+    public void DisableInput()
+    {
+        isInputEnabled = false;
+    }
 }
