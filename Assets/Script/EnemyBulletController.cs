@@ -7,7 +7,6 @@ public class EnemyBulletController : MonoBehaviour
     public float speed = 20f;
     public float lifetime = 2f;
     public Animator anim;
-    private int damage = 1;
 
     void Start()
     {
@@ -51,7 +50,7 @@ public class EnemyBulletController : MonoBehaviour
         PlayerAction player = hitInfo.GetComponent<PlayerAction>();
         if (player != null)
         {
-            player.TakeDamage(damage);
+            player.TakeDamage(1, transform.position);
             Destroy(gameObject, 0.05f);
             return;
         }

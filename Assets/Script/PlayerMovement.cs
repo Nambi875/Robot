@@ -7,149 +7,163 @@ using UnityEngine.UI;
 
 public class PlayerAction : MonoBehaviour
 {
-    // 移動関連
-    public float moveSpeed;
-    public DialogueManager manager;
-    float speedX, speedY;
-
-    // 体力関連
-    public int health;
-    public int num0fHearts;
-    public Image[] hearts;
-    public Sprite fullHeart;
-    public Sprite halfHeart;
-    public Sprite emptyHeart;
-
-    // 無敵システム関連
-    public float invincibleTime = 2.0f;
-    private bool invincible = false;
-    private float invincibleTimer = 2.0f;
-
-    // ノックバックシステム関連
-    public float knockbackForce = 10f;
-    private Vector2 knockbackDirection;
-    private bool isKnockback = false;
-
-    // アニメーション関連
-    bool isstart;
-    private SpriteRenderer spriteRenderer;
-    private Color originalColor;
+    // 移動関連の変数
+    public float moveSpeed = 5f;
     private Rigidbody2D rb;
     private Animator anim;
+    private Vector2 movement;
 
+    // 体力関連の変数
+    public int health = 3;
+    public int maxHealth = 5;
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+    public Sprite halfHeart;  // 追加: ハーフハートのスプライト
+
+    // 無敵システム関連の変数
+    public float invincibleTime = 2.0f;
+    private bool isInvincible = false;
+    private float invincibleTimer = 0f;
+
+    // 入力制御の変数
     private bool isInputEnabled = true;
+
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+
+    // 足音関連の変数
+    public AudioSource movementAudioSource;
+    public AudioClip footstepSound;
+    public float footstepInterval = 0.5f; // 足音の再生間隔
+    private float footstepTimer = 0f;
+
+    // ノックバック関連の変数
+    public float knockbackForce = 10f;  // プレイヤーのノックバック力
+    private bool isKnockback = false;
+    private Vector2 knockbackDirection;
 
     private void Awake()
     {
+        // 必要なコンポーネントの取得
+        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
-        rb = GetComponent<Rigidbody2D>();
+
+        // movementAudioSourceが設定されていない場合、AudioSourceコンポーネントを取得
+        if (movementAudioSource == null)
+        {
+            movementAudioSource = GetComponent<AudioSource>();
+        }
     }
 
-    void Update()
+    private void Update()
     {
-
+        // タイムライン再生中の場合、入力を無視
         if (!isInputEnabled)
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;  // プレイヤーの速度を0に設定
+            anim.SetFloat("Speed", 0f);  // アニメーションの速度を0に設定
+            Cursor.visible = false; // カットシーンが開始された時にマウスカーソルを非表示にする
+            Cursor.lockState = CursorLockMode.Locked;
             return;
         }
 
-        anim.SetFloat("Speed", rb.velocity.magnitude);
-        isstart = anim.GetBool("IsStart?");
-
-        // 現在の体力が最大体力を超えないように制限
-        if (health > num0fHearts)
+        if (isInputEnabled)
         {
-            health = num0fHearts;
+            Cursor.visible = true; // カットシーンが終了した時にマウスカーソルを表示する
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
-        for (int i = 0; i < hearts.Length; i++)
-        {
-            if (i < health)
-            {
-                hearts[i].sprite = fullHeart;
-            }
-            else if (i < health + 0.5f)
-            {
-                hearts[i].sprite = halfHeart;
-            }
-            else
-            {
-                hearts[i].sprite = emptyHeart;
-            }
+        // プレイヤーの入力処理
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-            // ハートが最大体力を超えないように有効/無効設定
-            hearts[i].enabled = i < num0fHearts;
+        // 移動速度が一定になるように正規化
+        if (movement.magnitude > 1)
+        {
+            movement.Normalize();
         }
 
-        if (!isKnockback) // ノックバック中でないときのみ移動
+        // アニメーションを更新
+        anim.SetFloat("Speed", movement.sqrMagnitude);
+
+        // プレイヤーが移動している場合、足音を再生
+        if (movement.sqrMagnitude > 0)
         {
-            speedX = Input.GetAxisRaw("Horizontal");
-            speedY = Input.GetAxisRaw("Vertical");
-            Vector2 moveDirection = new Vector2(speedX, speedY).normalized; // 正規化
-            rb.velocity = moveDirection * moveSpeed;
+            footstepTimer -= Time.deltaTime;
+            if (footstepTimer <= 0f)
+            {
+                movementAudioSource.PlayOneShot(footstepSound);
+                footstepTimer = footstepInterval;
+            }
+        }
+        else
+        {
+            // プレイヤーが停止したら足音を停止
+            if (movementAudioSource.isPlaying)
+            {
+                movementAudioSource.Stop();
+            }
+            footstepTimer = 0f; // タイマーをリセット
         }
 
-        if (invincible)
+        // 無敵状態の処理
+        if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;
             if (invincibleTimer <= 0)
             {
-                invincible = false;
-                spriteRenderer.color = originalColor;
+                isInvincible = false;
+                spriteRenderer.color = originalColor; // 無敵状態解除時に色を復元
             }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void FixedUpdate()
     {
-        if (collision.gameObject.CompareTag("EnemyBullet"))
+        // 物理的な移動処理
+        if (isInputEnabled && !isKnockback)
         {
-            knockbackDirection = (transform.position - collision.transform.position).normalized;
-            TakeDamage(1);
-            Debug.Log("Player hit by enemy bullet");
+            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    public void TakeDamage(int damage, Vector2 damageSourcePosition)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (!isInvincible)
         {
-            knockbackDirection = (transform.position - collision.transform.position).normalized;
-            TakeDamage(1);
-            Debug.Log("Player getting 10");
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        if (!invincible)
-        {
+            // 体力を減らす
             health -= damage;
-            invincible = true;
-            invincibleTimer = invincibleTime;
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-
-            StartCoroutine(Knockback(0.2f, knockbackForce));
-
             if (health <= 0)
             {
-                Debug.Log("Player Died");
                 Die();
             }
+            else
+            {
+                // ノックバック方向を設定
+                knockbackDirection = (transform.position - (Vector3)damageSourcePosition).normalized;
+                StartCoroutine(Knockback(0.2f, knockbackForce));  // ノックバックを適用
+
+                // 無敵状態を開始
+                StartCoroutine(BecomeInvincible());
+            }
+
+            // 体力UIを更新
+            UpdateHealthUI();
         }
     }
 
-    public IEnumerator Knockback(float dur, float power)
+    private IEnumerator Knockback(float duration, float power)
     {
         float timer = 0f;
         isKnockback = true;
 
-        while (timer <= dur)
+        while (timer <= duration)
         {
             timer += Time.deltaTime;
+            rb.velocity = Vector2.zero; // 現在の速度をリセット
             rb.AddForce(knockbackDirection * power, ForceMode2D.Impulse);
             yield return null;
         }
@@ -157,18 +171,61 @@ public class PlayerAction : MonoBehaviour
         isKnockback = false;
     }
 
-    void Die()
+    private IEnumerator BecomeInvincible()
     {
-        Destroy(gameObject);
+        // 無敵状態の開始
+        isInvincible = true;
+        invincibleTimer = invincibleTime;
+
+        // 無敵状態中はプレイヤーの色を透明に変更
+        spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+
+        // 無敵時間の待機
+        yield return new WaitForSeconds(invincibleTime);
+
+        // 無敵状態解除時に色を元に戻す
+        spriteRenderer.color = originalColor;
+    }
+
+    private void UpdateHealthUI()
+    {
+        // 体力UIの更新
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < health)
+            {
+                hearts[i].sprite = fullHeart;
+            }
+            else if (i < health + 1 && health % 2 != 0) // 体力が奇数の場合、半分のハートを表示
+            {
+                hearts[i].sprite = halfHeart;
+            }
+            else
+            {
+                hearts[i].sprite = emptyHeart;
+            }
+        }
+    }
+
+    private void Die()
+    {
+        // プレイヤーが死亡した時の処理
+        Debug.Log("Player died!");
+        // 例: ゲームオーバー画面を表示
     }
 
     public void EnableInput()
     {
+        // 入力を有効化
         isInputEnabled = true;
+        Debug.Log("PlayerAction: Input enabled");
     }
 
     public void DisableInput()
     {
+        // 入力を無効化
         isInputEnabled = false;
+        rb.velocity = Vector2.zero;  // 入力を無効にした時に即座に速度を0に設定
+        Debug.Log("PlayerAction: Input disabled");
     }
 }

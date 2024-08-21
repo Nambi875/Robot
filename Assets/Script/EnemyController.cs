@@ -129,6 +129,18 @@ public class EnemyController : MonoBehaviour
 
         isKnockback = false;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerAction playerAction = collision.gameObject.GetComponent<PlayerAction>();
+            if (playerAction != null)
+            {
+                playerAction.TakeDamage(1, transform.position); // プレイヤーにダメージとノックバックを与える
+            }
+        }
+    }
 }
 
 
