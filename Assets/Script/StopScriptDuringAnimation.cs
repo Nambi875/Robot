@@ -10,7 +10,7 @@ public class StopScriptDuringAnimation : MonoBehaviour
 
     private void Awake()
     {
-        // "Player" ｿﾀｺ・ｧﾆｮｿ｡ｼｭ Animator ﾄﾄﾆﾍﾆｮｸｦ ｰ｡ﾁｮｿﾉｴﾏｴﾙ.
+        // "Player" ｿﾀｺ・ｧﾆ?｡ｼ?Animator ﾄﾄﾆﾍﾆｮｸｦ ｰ｡ﾁｮｿﾉｴﾏｴﾙ.
         GameObject playerObject = GameObject.Find("Player");
         if (playerObject != null)
         {
@@ -19,15 +19,15 @@ public class StopScriptDuringAnimation : MonoBehaviour
             // externalAnimatorｰ｡ ﾁｸﾀ酩ﾏｴﾂﾁ・ｴﾙｽﾃ ﾈｮﾀﾎﾇﾕｴﾏｴﾙ.
             if (externalAnimator == null)
             {
-                Debug.LogError("Player ｿﾀｺ・ｧﾆｮｿ｡ Animator ﾄﾄﾆﾍﾆｮｰ｡ ｾﾀｴﾏｴﾙ!");
+                Debug.LogError("Player ｿﾀｺ・ｧﾆ??Animator ﾄﾄﾆﾍﾆｮｰ｡ ｾﾀｴﾏｴﾙ!");
             }
         }
         else
         {
-            Debug.LogError("\"Player\" ｿﾀｺ・ｧﾆｮｸｦ ﾃ｣ﾀｻ ｼ・ｾﾀｴﾏｴﾙ!");
+            Debug.LogError("\"Player\" ｿﾀｺ・ｧﾆ??ﾃ｣ﾀｻ ｼ・ｾﾀｴﾏｴﾙ!");
         }
 
-        // ﾇ・ｿﾀｺ・ｧﾆｮｿ｡ｼｭ SpriteRendererｿﾍ HandFollowMouse ﾄﾄﾆﾍﾆｮｸｦ ｰ｡ﾁｮｿﾉｴﾏｴﾙ.
+        // ﾇ・ｿﾀｺ・ｧﾆ?｡ｼ?SpriteRendererｿﾍ HandFollowMouse ﾄﾄﾆﾍﾆｮｸｦ ｰ｡ﾁｮｿﾉｴﾏｴﾙ.
         spriteRenderer = GetComponent<SpriteRenderer>();
         handFollowMouse = GetComponent<HandFollowMouse>();
 
